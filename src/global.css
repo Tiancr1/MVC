@@ -1,0 +1,13 @@
+body {
+  /* 因为宽度有滚动条所以占用了宽度，隐藏 */
+  overflow: hidden;
+}
+body > .page {
+  display: flex;
+  flex-wrap: wrap;
+}
+body > .page > section {
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid grey;
+}

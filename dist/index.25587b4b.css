@@ -1,0 +1,95 @@
+body {
+  overflow: hidden;
+}
+
+body > .page {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+body > .page > section {
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid gray;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:after, :before {
+  box-sizing: border-box;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+#app1 {
+}
+
+#app2 {
+}
+
+.tab-bar {
+  display: flex;
+}
+
+.tab-bar > li {
+  width: 50%;
+  border: 1px solid gray;
+}
+
+.tab-bar > li.selected {
+  color: #fff;
+  background: #3fb6e6;
+}
+
+.tab-content {
+}
+
+.tab-content > li {
+  display: none;
+}
+
+.tab-content > li.active {
+  display: block;
+}
+
+#app3 .square {
+  width: 10vw;
+  height: 10vh;
+  border: 1px solid gray;
+  margin-top: 10vh;
+  margin-left: 10vw;
+  transition: transform 1s;
+}
+
+#app3 .square.active {
+  transform: translateX(15vw);
+}
+
+@keyframes change {
+  0% {
+    background: red;
+  }
+
+  100% {
+    background: #00f;
+  }
+}
+
+#app4 .circle {
+  width: 30vw;
+  height: 30vh;
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+
+#app4 .circle.active {
+  animation: change 1s linear infinite alternate;
+}
+
+/*# sourceMappingURL=index.25587b4b.css.map */
