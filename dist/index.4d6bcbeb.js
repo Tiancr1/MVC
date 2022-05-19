@@ -526,39 +526,81 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _app1Css = require("./app1.css");
 var _jquery = require("jquery");
 var _jqueryDefault = parcelHelpers.interopDefault(_jquery);
-const $button1 = _jqueryDefault.default("#add1");
-const $button2 = _jqueryDefault.default("#minus1");
-const $button3 = _jqueryDefault.default("#mul2");
-const $button4 = _jqueryDefault.default("#divide2");
-const $number = _jqueryDefault.default("#number");
-//每次进入该页面都去localstorage中获取n的值，如果没有则展示100
-const n = localStorage.getItem("n");
-$number.text(n || 100);
-$button1.on("click", ()=>{
-    let n1 = parseInt($number.text());
-    n1 += 1;
-    //每次n变化后把变化后的值存储在localstorage中
-    localStorage.setItem("n", n1);
-    $number.text(n1);
-});
-$button2.on("click", ()=>{
-    let n2 = parseInt($number.text());
-    n2 -= 1;
-    localStorage.setItem("n", n2);
-    $number.text(n2);
-});
-$button3.on("click", ()=>{
-    let n3 = parseInt($number.text());
-    n3 *= 2;
-    localStorage.setItem("n", n3);
-    $number.text(n3);
-});
-$button4.on("click", ()=>{
-    let n4 = parseInt($number.text());
-    n4 /= 2;
-    localStorage.setItem("n", n4);
-    $number.text(n4);
-});
+//数据相关都放到m
+const m = {
+    data: {
+        n: localStorage.getItem("n")
+    }
+};
+//视图相关都放到v
+const v = {
+    html: `
+        <section id="app1">
+            <div class="output">
+                <span id="number">100</span>
+            </div>
+            <div class="action">
+                <button id="add1">+1</button>
+                <button id="minus1">-1</button>
+                <button id="mul2">*2</button>
+                <button id="divide2">÷2</button>
+            </div>
+        </section>`,
+    //将数据渲染到页面
+    //初始化数据
+    //每次进入该页面都去localstorage中获取n的值，如果没有则展示100
+    update () {
+        c.ui.number.text(m.data.n || 100);
+    },
+    render () {
+        const $element = _jqueryDefault.default(v.html).appendTo(_jqueryDefault.default('body>.page'));
+    }
+};
+//其他都c
+const c = {
+    //定义重要按钮元素
+    init () {
+        c.ui = {
+            button1: _jqueryDefault.default("#add1"),
+            button2: _jqueryDefault.default("#minus1"),
+            button3: _jqueryDefault.default("#mul2"),
+            button4: _jqueryDefault.default("#divide2"),
+            number: _jqueryDefault.default("#number")
+        };
+        c.bindEvents();
+    },
+    //绑定鼠标事件
+    bindEvents () {
+        c.ui.button1.on("click", ()=>{
+            let n = parseInt(c.ui.number.text());
+            n += 1;
+            //每次n变化后把变化后的值存储在localstorage中
+            localStorage.setItem("n", n);
+            c.ui.number.text(n);
+        });
+        c.ui.button2.on("click", ()=>{
+            let n = parseInt(c.ui.number.text());
+            n -= 1;
+            localStorage.setItem("n", n);
+            c.ui.number.text(n);
+        });
+        c.ui.button3.on("click", ()=>{
+            let n = parseInt(c.ui.number.text());
+            n *= 2;
+            localStorage.setItem("n", n);
+            c.ui.number.text(n);
+        });
+        c.ui.button4.on("click", ()=>{
+            let n = parseInt(c.ui.number.text());
+            n /= 2;
+            localStorage.setItem("n", n);
+            c.ui.number.text(n);
+        });
+    }
+};
+//第一次渲染html
+v.render();
+c.init();
 
 },{"./app1.css":"7FkZd","jquery":"hgMhh","@parcel/transformer-js/src/esmodule-helpers.js":"4fnxN"}],"7FkZd":[function() {},{}],"hgMhh":[function(require,module,exports) {
 /*!
@@ -7335,19 +7377,33 @@ var _jquery = require("jquery");
 var _jqueryDefault = parcelHelpers.interopDefault(_jquery);
 const $tabBar = _jqueryDefault.default("#app2 .tab-bar");
 const $tabContent = _jqueryDefault.default("#app2 .tab-content");
+const html = `<section id="app2">
+<ul class="tab-bar">
+    <li>1</li>
+    <li>2</li>
+</ul>
+<ul class="tab-content">
+    <li>内容1</li>
+    <li>内容2</li>
+</ul>
+</section>`;
+const $element = _jqueryDefault.default(html).appendTo(_jqueryDefault.default('body>.page'));
+const localKey = app2.index;
+const index = localStorage.getItem(localKey) || 0;
 $tabBar.on("click", "li", (e)=>{
     const $li = _jqueryDefault.default(e.currentTarget);
-    const index = $li.index();
-    console.log(index);
+    const index1 = $li.index();
+    localStorage.setItem(localKey, index1);
+    console.log(index1);
     //找到tabContent等于第index儿子（eq的意思是等于）让他变成display:"block"，让他的兄弟变成display:"none"
     //不要用css、show、hide的api
-    $tabBar.children().eq(index).addClass("selected").siblings().removeClass("selected");
+    $tabBar.children().eq(index1).addClass("selected").siblings().removeClass("selected");
     $tabContent.children()// .eq(index).css({display:"block"})
     // .siblings().css({display:"none"})
-    .eq(index).addClass("active").siblings().removeClass("active");
+    .eq(index1).addClass("active").siblings().removeClass("active");
 });
 //默认找到tabBar的第一个儿子并触发点击事件
-$tabBar.children().eq(0).trigger('click');
+$tabBar.children().eq(index).trigger('click');
 
 },{"./app2.css":"8RnuD","jquery":"hgMhh","@parcel/transformer-js/src/esmodule-helpers.js":"4fnxN"}],"8RnuD":[function() {},{}],"264pe":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -7355,10 +7411,24 @@ var _jquery = require("jquery");
 var _jqueryDefault = parcelHelpers.interopDefault(_jquery);
 var _app3Css = require("./app3.css");
 const $square = _jqueryDefault.default('#app3 .square');
+const localKey = 'app3.square';
+const html = `<section id="app3">
+<div class="square"></div>
+</section>`;
+const $element = _jqueryDefault.default(html).appendTo(_jqueryDefault.default('body>.page'));
+const active = localStorage.getItem(localKey) === 'yes';
+if (active) $square.addClass('active');
+else $square.removeClass('active');
 console.log("2");
 $square.on('click', ()=>{
     console.log("1");
-    $square.toggleClass("active");
+    if ($square.hasClass('active')) {
+        $square.removeClass('active');
+        localStorage.setItem(localKey, 'no');
+    } else {
+        $square.addClass('active');
+        localStorage.setItem(localKey, 'yes');
+    }
 });
 
 },{"jquery":"hgMhh","./app3.css":"iOgrn","@parcel/transformer-js/src/esmodule-helpers.js":"4fnxN"}],"iOgrn":[function() {},{}],"6ZENx":[function(require,module,exports) {
@@ -7367,6 +7437,10 @@ var _jquery = require("jquery");
 var _jqueryDefault = parcelHelpers.interopDefault(_jquery);
 var _app4Css = require("./app4.css");
 const $circle = _jqueryDefault.default('#app4 .circle');
+const html = `<section id="app4">
+<div class="circle"></div>
+</section>`;
+const $element = _jqueryDefault.default(html).appendTo(_jqueryDefault.default('body>.page'));
 $circle.on('mouseenter', ()=>{
     $circle.addClass('active');
 });
